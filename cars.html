@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car List</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: auto;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+        .chart-container {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Car List</h1>
+    <table>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Price</th>
+        </tr>
+        {% for car in cars %}
+        <tr>
+            <td>{{ car.Brand }}</td>
+            <td>{{ car.Model }}</td>
+            <td>{{ car.Year }}</td>
+            <td>{{ car.Price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const priceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for car in cars %}'{{ car.Model }}',{% endfor %}],
+                datasets: [{
+                    label: 'Car Prices',
+                    data: [{% for car in cars %}{{ car.Price }},{% endfor %}],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
