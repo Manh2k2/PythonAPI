@@ -1,4 +1,5 @@
 Nguyễn Đức Mạnh, K205480106038, Lớp : 56KMT.01, Môn : Lập trình Python 
+
 Tên đề tài : Hệ thống theo dõi giá ô tô
 
 I. Mục tiêu Lấy dữ liệu giá xe Xử lý dữ liệu :sử dụng FastAPI và Node-RED, sau đó lưu vào cơ sở dữ liệu. Xây dựng trang web
