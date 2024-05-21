@@ -1,0 +1,137 @@
+[
+  {
+    "id": "1",
+    "type": "inject",
+    "z": "flow1",
+    "name": "Get Car List",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 150,
+    "y": 100,
+    "wires": [
+      [
+        "2"
+      ]
+    ]
+  },
+  {
+    "id": "2",
+    "type": "http request",
+    "z": "flow1",
+    "name": "Fetch Car List",
+    "method": "GET",
+    "ret": "obj",
+    "paytoqs": false,
+    "url": "http://127.0.0.1:8000/cars",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "authType": "",
+    "x": 350,
+    "y": 100,
+    "wires": [
+      [
+        "3",
+        "4"
+      ]
+    ]
+  },
+  {
+    "id": "3",
+    "type": "debug",
+    "z": "flow1",
+    "name": "Show Car List",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 550,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "4",
+    "type": "function",
+    "z": "flow1",
+    "name": "Prepare SQL Query",
+    "func": "var carList = msg.payload;\nvar queries = [];\ncarList.forEach(function(car) {\n    var query = `INSERT INTO Cars (id, make, model, year) VALUES (${car.id}, '${car.make}', '${car.model}', ${car.year});`;\n    queries.push(query);\n});\nmsg.topic = queries.join(\" \");\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 350,
+    "y": 200,
+    "wires": [
+      [
+        "5"
+      ]
+    ]
+  },
+  {
+    "id": "5",
+    "type": "MSSQL",
+    "z": "flow1",
+    "mssqlCN": "your-mssql-connection",
+    "name": "Insert Car List",
+    "query": "",
+    "outField": "payload",
+    "returnType": 0,
+    "throwErrors": 1,
+    "x": 550,
+    "y": 200,
+    "wires": [
+      [
+        "6"
+      ]
+    ]
+  },
+  {
+    "id": "6",
+    "type": "debug",
+    "z": "flow1",
+    "name": "SQL Result",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 750,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "your-mssql-connection",
+    "type": "MSSQL-CN",
+    "z": "",
+    "name": "MSSQL Connection",
+    "server": "your-server",
+    "port": "1433",
+    "encyption": false,
+    "database": "your-database",
+    "useUTC": true,
+    "connectTimeout": "15000",
+    "requestTimeout": "15000",
+    "cancelTimeout": "5000",
+    "pool": "5",
+    "useNumericString": true,
+    "appName": "Node-RED",
+    "disablePreparedSq": false
+  }
+]
