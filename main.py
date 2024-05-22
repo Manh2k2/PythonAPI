@@ -22,15 +22,12 @@ class Cars(BaseModel):
     Price: float
 
 
-# Template HTML dưới dạng chuỗi
-html_template = """
 
-"""
 
 
 @app.get("/Cars", response_class=HTMLResponse)
 def get_data() -> List[Dict[str, str]]:
-    url = 'https://vinfastauto.com/vn_vi/bang-gia-xe-vinfast-moi-nhat'
+    url = 'https://vinfastotomiennam.com/bang-gia-2-31.html'
     try:
         response = requests.get(url)
         response.raise_for_status()  # Kiểm tra trạng thái của yêu cầu HTTP
