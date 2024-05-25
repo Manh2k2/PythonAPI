@@ -9,22 +9,13 @@ from typing import Dict, List
 import requests
 
 
-
-
 app = FastAPI()
 
-
-# Định nghĩa mô hình dữ liệu
 class Cars(BaseModel):
     Brand: str
     Model: str
     Year: int
     Price: float
-
-
-
-
-
 @app.get("/Cars", response_class=HTMLResponse)
 def get_data() -> List[Dict[str, str]]:
     url = 'https://vinfastotomiennam.com/bang-gia-2-31.html'
